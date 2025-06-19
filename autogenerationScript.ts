@@ -1,4 +1,4 @@
-import { ensureRecurringBillsForCurrentMonth } from './src/lib/recurring'
+import { ensureRecurrentBillsForCurrentMonth } from './src/lib/recurring'
 
 /*
   Usage:
@@ -26,7 +26,7 @@ if (arg) {
   console.log('Fake date set to', fakeToday.toISOString().slice(0, 10))
 }
 
-ensureRecurringBillsForCurrentMonth()
+ensureRecurrentBillsForCurrentMonth()
   .then(() => {
     console.log('Recurring bills ensured for this month.')
     process.exit(0)

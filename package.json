@@ -2,12 +2,16 @@
   "name": "bill-tracker",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test-recurring": "tsx autogenerationScript.ts"
+    "test-recurring": "tsx autogenerationScript.ts",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "electron:build": "npm run build && electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -38,11 +42,23 @@
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "electron": "^29.3.0",
+    "electron-builder": "^26.0.12",
+    "wait-on": "^7.0.1",
+    "cross-env": "^7.0.3"
   },
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
     }
+  },
+  "build": {
+    "appId": "com.example.billtracker",
+    "asar": true,
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ]
   }
 }

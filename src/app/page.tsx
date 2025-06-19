@@ -117,8 +117,19 @@ export default async function Home({ searchParams }: { searchParams?: Record<str
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
                   {bills.map((bill) => (
                     <tr key={bill.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
-                        {bill.name}
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-6">
+                        {bill.paymentLink ? (
+                          <a
+                            href={bill.paymentLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 underline"
+                          >
+                            {bill.name}
+                          </a>
+                        ) : (
+                          <span className="text-gray-900 dark:text-gray-100">{bill.name}</span>
+                        )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm">
                         <EditableAmount id={bill.id} amount={bill.amount} />

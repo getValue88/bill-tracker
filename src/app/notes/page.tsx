@@ -124,107 +124,107 @@ export default function NotesPage() {
 
         {stickyNotes.length>0 && (
           <DragDropContext onDragEnd={onStickyDragEnd}>
-          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 mt-6 mb-6">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Pinned</th>
-                <th className="px-3 py-2"></th>
-                <th></th>
-              </tr>
-            </thead>
-            <Droppable droppableId="sticky-table" direction="vertical">
-            {provided=> (
-            <tbody ref={provided.innerRef} {...provided.droppableProps} className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-              {stickyNotes.map((note,index)=> (
-                <Draggable draggableId={`s-${note.id}`} index={index} key={note.id}>
-                {prov=>(
-                <React.Fragment key={note.id}>
-                  <tr ref={prov.innerRef} {...prov.draggableProps}>
-                    <td className="px-3 py-2 dark:text-gray-300 cursor-pointer select-none" onClick={()=>{
-                      setOpen(prev=>{const s=new Set(prev); s.has(note.id)?s.delete(note.id):s.add(note.id); return s})
-                    }}>
-                      <div className="flex items-center gap-1 hover:underline" {...prov.dragHandleProps}>
-                        <StickyToggleButton id={note.id} sticky={note.sticky} onUpdated={fetchNotes} />
-                        <span>{note.title}</span>
-                      </div>
-                    </td>
-                    <td className="px-3 py-2"><NoteStatusButtons id={note.id} resolved={note.resolved} onUpdated={fetchNotes} /></td>
-                    <td className="px-3 py-2 text-right"><NoteArchiveButton id={note.id} onUpdated={fetchNotes} /></td>
-                  </tr>
-                  {open.has(note.id) && (
-                    <tr>
-                      <td colSpan={3} className="px-3 py-2 bg-gray-50 dark:bg-gray-900 text-sm text-gray-600 dark:text-gray-300 border-t">
-                        <EditableContent note={note} onUpdated={fetchNotes} />
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 mt-6 mb-6">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Pinned</th>
+                  <th className="px-3 py-2"></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <Droppable droppableId="sticky-table" direction="vertical">
+                {provided=> (
+                  <tbody ref={provided.innerRef} {...provided.droppableProps} className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                    {stickyNotes.map((note,index)=> (
+                      <Draggable draggableId={`s-${note.id}`} index={index} key={note.id}>
+                        {prov=>(
+                          <React.Fragment key={note.id}>
+                            <tr ref={prov.innerRef} {...prov.draggableProps}>
+                              <td className="px-3 py-2 dark:text-gray-300 cursor-pointer select-none" onClick={()=>{
+                                setOpen(prev=>{const s=new Set(prev); s.has(note.id)?s.delete(note.id):s.add(note.id); return s})
+                              }}>
+                                <div className="flex items-center gap-1 hover:underline" {...prov.dragHandleProps}>
+                                  <StickyToggleButton id={note.id} sticky={note.sticky} onUpdated={fetchNotes} />
+                                  <span>{note.title}</span>
+                                </div>
+                              </td>
+                              <td className="px-3 py-2"><NoteStatusButtons id={note.id} resolved={note.resolved} onUpdated={fetchNotes} /></td>
+                              <td className="px-3 py-2 text-right"><NoteArchiveButton id={note.id} onUpdated={fetchNotes} /></td>
+                            </tr>
+                            {open.has(note.id) && (
+                              <tr>
+                                <td colSpan={3} className="px-3 py-2 bg-gray-50 dark:bg-gray-900 text-sm text-gray-600 dark:text-gray-300 border-t">
+                                  <EditableContent note={note} onUpdated={fetchNotes} />
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </tbody>
                 )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </tbody>
-            )}
-            </Droppable>
-          </table>
+              </Droppable>
+            </table>
           </DragDropContext>
         )}
 
         <DragDropContext onDragEnd={onDragEnd}>
-        <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 mt-6">
-          <thead className="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Title</th>
-              <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Status</th>
-              <th className="px-3 py-2 text-right text-sm font-semibold dark:text-gray-100">Actions</th>
-            </tr>
-          </thead>
-          <Droppable droppableId="notes-table" direction="vertical">
-          {(provided)=> (
-          <tbody ref={provided.innerRef} {...provided.droppableProps} className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            {regularNotes.map((note,index) => (
-              <Draggable draggableId={note.id.toString()} index={index} key={note.id}>
-              {(prov)=> (
-              <React.Fragment>
-                <tr ref={prov.innerRef} {...prov.draggableProps} >
-                  <td className="px-3 py-2 dark:text-gray-300 cursor-pointer select-none" onClick={() => {
-                    setOpen(prev => {
-                      const s = new Set(prev);
-                      s.has(note.id) ? s.delete(note.id) : s.add(note.id);
-                      return s;
-                    });
-                  }}>
-                    <div className="flex items-center gap-1 hover:underline" {...prov.dragHandleProps}>
-                      <StickyToggleButton id={note.id} sticky={note.sticky} onUpdated={fetchNotes} />
-                      <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${open.has(note.id)?'rotate-90':'rotate-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                      </svg>
-                      <span>{note.title}</span>
-                    </div>
-                  </td>
-                  <td className="px-3 py-2">
-                    <NoteStatusButtons id={note.id} resolved={note.resolved} onUpdated={fetchNotes} />
-                  </td>
-                  <td className="px-3 py-2 text-right">
-                    <NoteArchiveButton id={note.id} onUpdated={fetchNotes} />
-                  </td>
-                </tr>
-                {open.has(note.id) && (
-                  <tr>
-                    <td colSpan={3} className="px-3 py-2 bg-gray-50 dark:bg-gray-900 text-sm text-gray-600 dark:text-gray-300 border-t">
-                      <EditableContent note={note} onUpdated={fetchNotes} />
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700 mt-6">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Title</th>
+                <th className="px-3 py-2 text-left text-sm font-semibold dark:text-gray-100">Status</th>
+                <th className="px-3 py-2 text-right text-sm font-semibold dark:text-gray-100">Actions</th>
+              </tr>
+            </thead>
+            <Droppable droppableId="notes-table" direction="vertical">
+              {(provided)=> (
+                <tbody ref={provided.innerRef} {...provided.droppableProps} className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                  {regularNotes.map((note,index) => (
+                    <Draggable draggableId={note.id.toString()} index={index} key={note.id}>
+                      {(prov)=> (
+                        <React.Fragment>
+                          <tr ref={prov.innerRef} {...prov.draggableProps} >
+                            <td className="px-3 py-2 dark:text-gray-300 cursor-pointer select-none" onClick={() => {
+                              setOpen(prev => {
+                                const s = new Set(prev);
+                                s.has(note.id) ? s.delete(note.id) : s.add(note.id);
+                                return s;
+                              });
+                            }}>
+                              <div className="flex items-center gap-1 hover:underline" {...prov.dragHandleProps}>
+                                <StickyToggleButton id={note.id} sticky={note.sticky} onUpdated={fetchNotes} />
+                                <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${open.has(note.id)?'rotate-90':'rotate-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                                <span>{note.title}</span>
+                              </div>
+                            </td>
+                            <td className="px-3 py-2">
+                              <NoteStatusButtons id={note.id} resolved={note.resolved} onUpdated={fetchNotes} />
+                            </td>
+                            <td className="px-3 py-2 text-right">
+                              <NoteArchiveButton id={note.id} onUpdated={fetchNotes} />
+                            </td>
+                          </tr>
+                          {open.has(note.id) && (
+                            <tr>
+                              <td colSpan={3} className="px-3 py-2 bg-gray-50 dark:bg-gray-900 text-sm text-gray-600 dark:text-gray-300 border-t">
+                                <EditableContent note={note} onUpdated={fetchNotes} />
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </tbody>
               )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </tbody>
-          )}
-          </Droppable>
-        </table>
+            </Droppable>
+          </table>
         </DragDropContext>
       </div>
     </div>

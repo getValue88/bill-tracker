@@ -4,7 +4,15 @@ import { prisma } from '../../../lib/prisma'
 export async function GET() {
   try {
     // @ts-ignore until prisma types updated
-    const notes = await prisma.note.findMany({ where: { active: true }, orderBy: [{ sticky: 'desc' }, { order: 'asc' }] })
+    const notes = await prisma.note.findMany({
+      where: { active: true },
+      // Sticky first, then unresolved, then by order field
+      orderBy: [
+        { sticky: 'desc' },
+        { resolved: 'asc' },
+        { order: 'asc' },
+      ],
+    })
     return NextResponse.json(notes)
   } catch (error) {
     return NextResponse.json({ error: 'Error fetching notes' }, { status: 500 })
