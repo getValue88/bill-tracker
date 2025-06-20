@@ -40,10 +40,10 @@ A cross-platform personal finance helper built with **Next.js 14**, **Prisma** a
 ## 🔧 Getting Started (Browser)
 
 ```bash
-# 1. Clone & install
+# 1. Clone & install (runs `postinstall` which executes `prisma generate` automatically)
 git clone https://github.com/<your>/bill-tracker.git
 cd bill-tracker
-npm install
+npm install  # generates Prisma client
 
 # 2. Database – create & apply migrations
 npx prisma migrate dev --name init

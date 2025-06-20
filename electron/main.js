@@ -25,15 +25,21 @@ async function createMainWindow() {
 
 function startNext() {
   const isDev = process.env.NODE_ENV === 'development';
-  const cmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-  const args = isDev
-    ? ['run', 'dev']
-    : ['run', 'start', '--', '-p', NEXT_PORT];
 
-  nextProcess = childProcess.spawn(cmd, args, {
-    stdio: 'inherit',
-    env: { ...process.env, PORT: NEXT_PORT }
-  });
+  if (isDev) {
+    const cmd = process.platform === 'win32' ? 'npm.cmd' : 'npm'
+    nextProcess = childProcess.spawn(cmd, ['run', 'dev'], {
+      stdio: 'inherit',
+      env: { ...process.env, PORT: NEXT_PORT },
+    })
+  } else {
+    // use standalone server built by Next.js (included inside asar)
+    const serverPath = path.join(__dirname, '..', '.next', 'standalone', 'server.js')
+    nextProcess = childProcess.spawn(process.execPath, [serverPath], {
+      stdio: 'inherit',
+      env: { ...process.env, PORT: NEXT_PORT },
+    })
+  }
 }
 
 app.whenReady().then(() => {
