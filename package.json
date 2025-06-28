@@ -5,7 +5,7 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --standalone",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test-recurring": "tsx autogenerationScript.ts",
@@ -56,10 +56,12 @@
   },
   "build": {
     "appId": "com.example.billtracker",
-    "asar": true,
+    "asar": false,
     "files": [
-      "dist/**/*",
-      "electron/**/*"
+      "electron/**/*",
+      ".next/**/*",
+      "public/**/*",
+      "prisma/schema.prisma"
     ]
   }
 }
